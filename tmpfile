@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+# This overcomplicated script is just determined to give you a unique file name you can use to shove things in.
+# So as to not waste brain space on the clutter that would other wise end up being you $HOME.
+# If you give it an ARGV[1] it will make a folder named that in $TMP so you can keep topical files together.
+# But the file name itself will always be a unique random number.
+
+if [ -z "${TMP}" ]; then
+	echo 'Please set \$TMP.' >&2
+	if [ -w '/tmp' ]; then
+		export TMP="/tmp/${USER}.tmpcat/"
+		if [ ! -w "${TMP}" ]; then
+			if mkdir "${TMP}"; then
+				chmod 0700 "${TMP}"
+			else
+				echo "Unable to create temporary space" >&2
+				exit 1
+			fi
+		fi
+		echo 'No temporary space available' >&2
+		exit 1
+	fi
+fi
+
+if [ -z "${1}" ];then
+	file="${TMP}/${RANDOM}"
+	while [ -e "$file" ]; do 
+		file="${TMP}/${RANDOM}${RANDOM}"
+	done
+	touch "${file}"
+	echo "${file}"
+else
+	if [ -f "${TMP}/${1}" ]; then
+		echo "Name colision with file $1" >&2
+		exit 1
+	fi
+	if [ ! -d "${TMP}/${1}" ]; then
+		mkdir -p "${TMP}/${1}"
+		chmod 0700 "${TMP}/${1}"
+	fi
+	file="${TMP}/${1}/${RANDOM}"
+	while [ -e "${file}" ]; do 
+		file="${TMP}/${1}/${RANDOM}${RANDOM}"
+	done
+	touch "${file}"
+	echo "${file}"
+fi
