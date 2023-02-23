@@ -3,6 +3,10 @@
 #Cleans an XML file
 #Fred Dinkler IV
 
+if ! command -v xmllint; then
+	echo "Please install xmllint" >&2
+	exit 1
+fi
 for i in "${@}";do
 	file="$( tmpfile clean.xml )"
 	echo "Working on ${i} backing up in ${file}.bak"

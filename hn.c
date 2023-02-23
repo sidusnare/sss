@@ -7,6 +7,8 @@
 #include <fcntl.h>
 #include <string.h>
 
+/* Simple port checker for scripting, faster and easier than nmap */
+
 int main(int argc, char *argv[]) {
 int res;
 struct sockaddr_in addr;

@@ -2,7 +2,8 @@
 #include <time.h>
 #include <stdlib.h>
 
-//From Landon Bland on stackexchange.com at Wed Jan 23 10:37:04 EST 2019 URI https://unix.stackexchange.com/questions/290179/how-to-slow-down-the-scrolling-of-multipage-standard-output-on-terminal 
+//From Landon Bland on stackexchange.com at Wed Jan 23 10:37:04 EST 2019 
+//URI https://unix.stackexchange.com/questions/290179/how-to-slow-down-the-scrolling-of-multipage-standard-output-on-terminal 
 
 
 int main(int argc, char** argv) {

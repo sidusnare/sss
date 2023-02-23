@@ -1,5 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
+# Decode a QR code image and write one that isn't the fever dream of some feral graphic designer 
 for prog in zbarimg qrencode convert;do
 	if ! command -v "${prog}"; then
 		echo "Unable to find ${prog}" >&2

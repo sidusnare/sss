@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <termios.h>
+
+// Very simple yes or no. Ignores everything else. Don't need to press enter, no wasted lines in your bash script getting and then checking a variable, no loops, no BS. 
+// if yesno; then doit;else;dont;done
+
 int c;
 char r;
 int main ()

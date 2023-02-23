@@ -1,9 +1,7 @@
-/* dnslookup.c
- * prints out all hostnames of a specified ip-address
- * or prints out all ip-addresses of a specified hostname
- * Modified by Fred Dinkler IV to print error to standard
- * output instead of error, making use in scripted output
- * easier.
+/* 
+ * ip.unrange.c
+ * Given a start and stop IP, it will print all intervieneing IPs. 
+ * Marginally useful for certain scripting tasks.
  */
 
 #include <stdio.h>
