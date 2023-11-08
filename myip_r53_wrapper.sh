@@ -1,4 +1,6 @@
 #!/bin/bash
+#Fred Dinkler IV
+#GPLv3
 #
 #This is the wrapper for updating my IP information, I run it every minute, so there are a lot of limit checks and throttles in here. It bails out if it's still runnning, or if ip info hasn't changed (except for the first of each hour)
 

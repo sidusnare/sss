@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+#Fred Dinkler IV
+#GPLv3
 
 if [ -z "${1}" ]; then
 	echo "Please pass string that might be an IPv4 IP" >&2

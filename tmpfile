@@ -4,6 +4,8 @@
 # So as to not waste brain space on the clutter that would other wise end up being you $HOME.
 # If you give it an ARGV[1] it will make a folder named that in $TMP so you can keep topical files together.
 # But the file name itself will always be a unique random number.
+#Fred Dinkler IV
+#GPLv3
 
 if [ -z "${TMP}" ]; then
 	echo 'Please set \$TMP.' >&2

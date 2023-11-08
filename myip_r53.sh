@@ -1,4 +1,6 @@
 #!/bin/bash
+#Fred Dinkler IV
+#GPLv3
 
 
 #This script is part of my config management, so it will try to install the route53 gem, and if will try to install ruby gems to do so

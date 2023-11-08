@@ -2,6 +2,7 @@
 
 #Cleans an XML file
 #Fred Dinkler IV
+#GPLv3
 
 if ! command -v xmllint; then
 	echo "Please install xmllint" >&2

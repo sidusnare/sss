@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+#Fred Dinkler IV
+#GPLv3
+
 
 EXTS=( 'journal' 'wal' 'shm' 'rebuild' )
 if file "${1}" | grep ': SQLite'; then

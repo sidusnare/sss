@@ -2,6 +2,8 @@
 
 #Read JSON data and write it well formatted to a file
 #Fred Dinkler IV
+#GPLv3
+
 
 import json
 import sys
