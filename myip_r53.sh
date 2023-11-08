@@ -24,7 +24,7 @@ MATRIX=( '/usr/local/bin/matrix.sh' '--send' '--room=!RRRRRRRRRRRRRRRRRR:chat.do
 NAME="$( hostname | cut -d . -f 1 )"
 MYNAME="${NAME}.${DOM}."
 MYENAME="${NAME}-ext.${DOM}."
-DEPS=( 'ip' 'route' 'grep' 'awk' 'gem' 'isip' 'hostname' 'cut' 'dig' )
+DEPS=( 'ip' 'route' 'grep' 'awk' 'gem' 'isip.sh' 'hostname' 'cut' 'dig' )
 
 if command -v curl &>> /dev/null; then
         FETCH=( 'curl' '-s' '-k' )
@@ -35,8 +35,8 @@ else
 	exit 1
 fi
 
-if ! command -v isip &>> /dev/null; then
-	echo "isip utility needed, get it at https://github.com/sidusnare/sss, put it in your path" >&2
+if ! command -v isip.sh &>> /dev/null; then
+	echo "isip.sh utility needed, get it at https://github.com/sidusnare/sss, put it in your path" >&2
 	exit 1
 fi
 
@@ -85,21 +85,21 @@ fi
 
 for ns in "${MYNS[@]}";do
 	edoip="$( dig +short A  "${MYENAME}" "@${ns}" )"
-	if isip "${edoip}"; then
+	if isip.sh "${edoip}"; then
 		break
 	fi
 done
 
 for ns in "${MYNS[@]}";do
 	doip="$( dig +short A "${MYNAME}" "@${ns}" )"
-	if isip "${doip}"; then
+	if isip.sh "${doip}"; then
 		break
 	fi
 done
 
 intdev="$(route -n | grep -E -v 'tun[0-9][0-9]*$|tap[0-9][0-9]*$ppp[0-9][0-9]*$' | grep -m 1 '^0\.0\.0\.0 ' | awk '{print($8)}')"
 intip="$( ip addr show dev "${intdev}"  | grep -w inet | tr '/' ' ' | awk '{print($2)}' | head -n 1 )"
-if ! isip "${intip}"; then
+if ! isip.sh "${intip}"; then
 	"${MATRIX[@]}" "${NAME}:Unable to parse running ip configuration"
 	rm -f -v '/tmp/.myip_r53.lock'
 	exit 1
@@ -110,7 +110,7 @@ for server in checkip.amazonaws.com ifconfig.me icanhazip.com ipecho.net/plain i
 	#In my version of this, the first server in the list is my server with a PHP script that's just <?php echo $_SERVER['REMOTE_ADDR']; ?>
 	#So the rest are just fallbacks for if my server is down or unreachable for whatever
 	extip="$( "${FETCH[@]}" -4 "https://${server}" | tr ' ' '\n' | grep -m 1  -E -o '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)' )"
-	if isip "${extip}"; then
+	if isip.sh "${extip}"; then
 		break
 	fi
 done
@@ -146,7 +146,7 @@ if ip addr | grep inet6 | grep -w global; then
 fi
 
 if [ "${intip}"  != "${doip}" ]; then
-	if isip "${doip}"; then
+	if isip.sh "${doip}"; then
 		if route53 --file "${HOME}/.route53.myip_r53" --zone "${DOM}" --change --name "${MYNAME}" --type A --ttl 300 --values "${intip}";then
 			"${MATRIX[@]}" "${NAME}:Changing ${MYNAME} to ${intip}"
 			echo "Changing ${MYNAME} to ${intip}"
@@ -167,7 +167,7 @@ if [ "${intip}"  != "${doip}" ]; then
 fi
 
 if [ "${extip}" != "${edoip}" ]; then
-	if isip "${edoip}";then
+	if isip.sh "${edoip}";then
 		if route53 --file "${HOME}/.route53.myip_r53" --zone "${DOM}" --change --name "${MYENAME}" --type A --ttl 300 --values "${extip}"; then
 			"${MATRIX[@]}" "${NAME}:Changed ${MYENAME} to ${extip}"
 			echo "Changed ${MYENAME} to ${extip}"
