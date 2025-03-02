@@ -2,12 +2,7 @@
 
 #Cleans an XML file
 #Fred Dinkler IV
-#GPLv3
 
-if ! command -v xmllint; then
-	echo "Please install xmllint" >&2
-	exit 1
-fi
 for i in "${@}";do
 	file="$( tmpfile clean.xml )"
 	echo "Working on ${i} backing up in ${file}.bak"
@@ -21,7 +16,8 @@ for i in "${@}";do
 		continue
 	fi
 
-	if ! grep -E -v '^<<<<<<<|^=======|^>>>>>>>' "${i}" >  "${file}"; then
+	if ! grep -E -a -v '^<<<<<<<|^=======|^>>>>>>>' "${i}" >  "${file}"; then
+		mv "${i}" "${file}"
 		echo "Unable to strip git comments from ${i}" >&2
 		continue
 	fi
