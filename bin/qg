@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+YES=no
+FORCE=no
+while getopts yvf modes; do
+	case $modes in
+		f)
+			FORCE=yes
+			;;
+		y)
+			YES=yes
+			;;
+		v)
+			set -x
+			;;
+	esac
+done
+shift $(( OPTIND - 1))
+
+if [ -z "$1" ];then
+	comment="quick commit via ${0} from ${USER}@$(hostname) in ${PWD} "
+else
+	comment="${*}"
+fi
+if which git-up &>> /dev/null; then
+	git-up || git pull --rebase || git pull
+else
+	git pull --rebase || git pull
+fi
+git status
+if [ "${YES}" != 'yes' ]; then
+	echo -n Go?
+	if yesno; then
+		YES=yes
+	fi
+fi
+if [ "${YES}" == 'yes' ];then
+	sanity.quick
+	echo
+	sanity.quick
+	git add --all .
+	git commit -m "${comment}"
+	sanity.quick
+#	git push -v
+	declare -I push_count=0
+	declare -I fails=0
+	while read -r remote;do
+		if [ "${remote}" == 'origin' ]; then
+			continue
+		fi
+		push_count=$(( push_count + 1 ))
+		echo -e "\nPushing to ${remote}"
+		if ! git push "${remote}"; then
+			fails=$(( fails + 1 ))
+		fi
+		
+	done < <( git remote )
+	if [ "${push_count}" -lt 1 ] || [ "${fails}" -gt 0 ] ; then
+		if git push -v;then
+			exit 0
+		else
+			if [ "${FORCE}" == 'yes' ];then
+				if  [ "${push_count}" -lt 1 ]; then
+					exit 1
+				else
+					exit 0
+				fi
+			fi
+			exit 1
+		fi
+	fi
+	
+else
+	echo
+	echo k thnx bye
+	exit 1
+fi
+

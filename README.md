@@ -38,4 +38,10 @@ These utilitis are laid out in a Filesystem Hierarchy Standard (FHS) like manner
 - tmpcat
   - Uses tmpfile to create a file and cat into it
   - Uses argv1 as tmpfile name, shifts, and passes rest to cat
-
+- qg
+  - Takes argv as a commit message
+  - does a git-up if installed, git pull --rebase otherwise
+  - does a commit of everything outstanding in repo
+  - pushes that commit on all remote
+  - if `-f` supplied, returns true if any remote takes the push
+  - if `-y` supplied, doesn't ask for Y/N before comitting
