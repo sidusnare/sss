@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+
+file="$( tmpfile tvi )"
+echo "${file}"
+exec vi "${file}" "${@}"

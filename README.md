@@ -32,3 +32,10 @@ These utilitis are laid out in a Filesystem Hierarchy Standard (FHS) like manner
   - Still needs improvements
 - myip_r53.sh
   - Creates or updates an A record in AWS Route53 based on machine's current IP
+- tvi
+  - Uses tmpfile to create a file and edit it
+  - Passes all args through to vi, so any vi options can be used
+- tmpcat
+  - Uses tmpfile to create a file and cat into it
+  - Uses argv1 as tmpfile name, shifts, and passes rest to cat
+

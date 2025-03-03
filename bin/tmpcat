@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+if [ -z "${1}" ]; then
+	PREFIX='cat'
+else
+	PREFIX="${1}"
+fi
+file="$(tmpfile "${PREFIX}")"
+readlink -f "${file}"
+shift
+cat "${@}" > "${file}"
+readlink -f "${file}"
