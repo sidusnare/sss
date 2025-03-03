@@ -7,6 +7,8 @@ Not super advanced, but together, they can be quite useful.
 # Structure
 These utilitis are laid out in a Filesystem Hierarchy Standard (FHS) like manner, as I keep them in my home directory and add them to my path.
 
+For my use cases, I keep a tmpfs mounted on $HOME/usr/tmp, some of my design choices make more sense when you know that.
+
 # Programs
 
 - tmpfile
@@ -45,3 +47,11 @@ These utilitis are laid out in a Filesystem Hierarchy Standard (FHS) like manner
   - pushes that commit on all remote
   - if `-f` supplied, returns true if any remote takes the push
   - if `-y` supplied, doesn't ask for Y/N before comitting
+- ssh.find
+  - Looks for the ssh agent in the places where I keep it
+- ssh.start
+  - Starts an ssh agent in the place whree I keep it
+- ressh
+  - Starts an ssh agent if one isn't running
+  - Adds keys from the usual place
+

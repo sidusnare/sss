@@ -1,0 +1,58 @@
+#!/usr/bin/env sh
+
+cd "${HOME}" || exit 1
+
+NOW="$( date +%s )"
+printf "\nDebug:\n\tDisplay:\t%s\n\tSSH_AGENT_PID:\t%s\n\tSSH_AUTH_SOCK:\t%s\n\tSocket:\t\t%s\n\tenv:\t\t%s/usr/tmp/.fsec/.ssh.%s.%s\n\tHOME\t\t%s\n\tpwd:\t\t%s\n\tPID:\t\t%s\n\tNOW:\t\t%s" "${DISPLAY}" "$SSH_AGENT_PID" "$SSH_AUTH_SOCK" "${SSH_AUTH_SOCK}" "${HOME}" "${PPID}" "${NOW}" "${HOME}" "${PWD}" "${PPID}" "${NOW}"
+
+printf "\nCleaning up and SSH agents"
+MYUID="$( id -u )"
+
+c=0
+while pgrep -U "${MYUID}" ssh-pageant;do
+	printf "Killing agent"
+	killall -v ssh-pageant 
+	c=$(( c + 1 ))
+	if [ "${c}" -gt 20 ];then
+		printf "Killing agent with extreem prejudice"
+		killall -v ssh-pageant -9
+	fi
+	sleep 0.3
+done
+
+c=0
+while pgrep -U "${MYUID}" ssh-agent;do
+	printf "Killing agent"
+	killall -v ssh-agent 
+	c=$(( c + 1 ))
+	if [ "${c}" -gt 20 ];then
+		printf "Killing agent with extreem prejudice"
+		killall -v ssh-agent -9
+	fi
+	sleep 0.3
+done
+if [ ! -d "${HOME}/usr/tmp/.fsec" ]; then
+	mkdir -p "${HOME}/usr/tmp/.fsec"
+	chmod 0700 "${HOME}/usr/tmp/.fsec"
+fi
+for f in "${HOME}/usr/tmp/.fsec/.ssh"* "${HOME}/usr/tmp/.fsec/.SSH"* ;do
+	if [ -e "${f}" ]; then
+		rm -f -v "${f}"
+	fi
+done
+
+printf "Starting ssh-agent"
+touch "${HOME}/usr/tmp/.fsec/.ssh.${PPID}.${NOW}"
+chmod 0600 "${HOME}/usr/tmp/.fsec/.ssh.${PPID}.${NOW}"
+if [ "$(uname -o)" = "Cygwin" ]; then
+	ssh-pageant -a "${HOME}/usr/tmp/.fsec/.SSH.${PPID}.${NOW}" | grep -v ^printf > "${HOME}/usr/tmp/.fsec/.ssh.${PPID}.${NOW}"
+else
+	ssh-agent -a "${HOME}/usr/tmp/.fsec/.SSH.${PPID}.${NOW}" | grep -v ^printf > "${HOME}/usr/tmp/.fsec/.ssh.${PPID}.${NOW}"
+fi
+
+chmod 0600 "${HOME}/usr/tmp/.fsec/.ssh.${PPID}.${NOW}" "${HOME}/usr/tmp/.fsec/.SSH.${PPID}.${NOW}"
+. "${HOME}/usr/tmp/.fsec/.ssh.${PPID}.${NOW}"
+export SSH_AGENT_PID 
+export SSH_AUTH_SOCK
+
+printf "\nDebug:\n\tDisplay:\t%s\n\tSSH_AGENT_PID:\t%s\n\tSSH_AUTH_SOCK:\t%s\n\tSocket:\t\t%s\n\tenv:\t\t%s/usr/tmp/.fsec/.ssh.%s.%s\n\tHOME\t\t%s\n\tpwd:\t\t%s\n\tPID:\t\t%s\n\tNOW:\t\t%s" "${DISPLAY}" "$SSH_AGENT_PID" "$SSH_AUTH_SOCK" "${SSH_AUTH_SOCK}" "${HOME}" "${PPID}" "${NOW}" "${HOME}" "${PWD}" "${PPID}" "${NOW}"
