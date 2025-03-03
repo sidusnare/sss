@@ -15,4 +15,20 @@ These utilitis are laid out in a Filesystem Hierarchy Standard (FHS) like manner
     - make that directory in $TMP if it doesn't exist
     - include that directory in the path it outputs
     - return an error if the name exists as a file
-
+- check.*.py
+  - Reads a file in the specified format
+  - Return error if file cannot be read
+- clean.*.py
+  - Reads a file in the specified format
+  - Writes that file back out in same format
+  - Good for canonicalizing data
+- isip.sh
+  - takes one argument, a string
+  - returns true if it is a valid IPv4 addess
+- oom_check.sh
+  - Checks if OOM is in `dmesg`
+- strace.py
+  - Cleans up strace output
+  - Still needs improvements
+- myip_r53.sh
+  - Creates or updates an A record in AWS Route53 based on machine's current IP
