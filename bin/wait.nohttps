@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+STIME=$(date +%s)
+if [ -z "${1}" ]; then
+	echo "Please provide a server name" >&2
+	exit 1
+fi
+
+for x in "${@}";do 
+	echo -n "Waiting for:"
+	PORT=443
+	userandhost=$( awk -F \@ '{print($2)}' <<< "${x}" )
+	if [ -z "${userandhost}" ]; then
+		host="${x}"
+	else
+		host="${userandhost}"
+	fi
+	dnslookup "${host}"
+	case "${host}" in
+		admin) PORT=443;;
+		admin.debmi.com) PORT=443;;
+		hactar) PORT=443;;
+		hactar.debmi.com) PORT=443;;
+		marvin) PORT=443;;
+		marvin.debmi.com) PORT=443;;
+	esac
+	while true;do
+		if hn "${host}" "${PORT}" 1 >> /dev/null 2>> /dev/null;then
+			echo -n '!'
+		else
+			echo -n ','
+			sleep 1
+			if hn "${host}" "${PORT}" 1 >> /dev/null 2>> /dev/null;then
+				echo -n '?'
+			else
+				sleep 1
+				if hn "${host}" "${PORT}" 1 >> /dev/null 2>> /dev/null;then
+					echo -n '¿'
+				else
+					echo -n ','
+					break
+				fi
+			fi
+		fi
+		sleep 1
+	done
+	sleep 1s
+	while hn "${host}" "${PORT}" 1 >> /dev/null 2>> /dev/null;do 
+		echo -n '!'
+		sleep 0.5s
+	done
+	UDATE=$(date)
+	ULEN=$(( $(date +%s) - STIME ))
+	DTIME=$(date +%s)
+	until hn "${host}" "${PORT}" 1 >> /dev/null 2>> /dev/null;do echo -n .;sleep 0.5s;done
+done
+
+if [ "${ULEN}" -gt 3600 ]; then
+	echo -n -e "\nSSH responded for ${ULEN} seconds ($(( ULEN / 3600 )) hours) and stoped on ${UDATE}."
+elif [ "${ULEN}" -gt 60 ]; then
+	echo -n -e "\nSSH responded for ${ULEN} seconds ($(( ULEN / 60 )) minutes) and stoped on ${UDATE}."
+else
+	echo -n -e "\nSSH responded for ${ULEN} seconds and stoped on ${UDATE}."
+fi
+DLEN=$(( $(date +%s) - STIME ))
+if [ "${DLEN}" -gt 3600 ]; then
+	echo "Then, waited for ${DLEN} seconds ($(( DLEN / 3600 )) hours) and started to respond on $(date)."
+elif [ "${DLEN}" -gt 60 ]; then
+	echo "Then, waited for ${DLEN} seconds ($(( DLEN / 60 )) minutes) and started to respond on $(date)."
+else
+	echo "Then, waited for ${DLEN} seconds and started to respond on $(date)."
+fi

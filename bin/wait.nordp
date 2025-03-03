@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+STIME=$(date +%s)
+if [ -z "${1}" ]; then
+	echo "Please provide a server name" >&2
+	exit 1
+fi
+
+for x in "${@}";do 
+	dnslookup "${x}"
+	while hn "${x}" 3389 1 >> /dev/null 2>> /dev/null;do echo -n '!';sleep 0.5s;done
+	UDATE=$(date)
+	DTIME=$(date +%s)
+	ULEN=$(( DTIME - STIME ))
+	until hn "${x}" 3389 1 >> /dev/null 2>> /dev/null;do echo -n .;sleep 0.5s;done
+done
+if [ "${ULEN}" -gt 3600 ]; then
+	echo -n -e "\nSSH responded for ${ULEN} seconds ($(( ULEN / 3600 )) hours) and stoped on ${UDATE}."
+elif [ "${ULEN}" -gt 60 ]; then
+	echo -n -e "\nSSH responded for ${ULEN} seconds ($(( ULEN / 60 )) minutes) and stoped on ${UDATE}."
+else
+	echo -n -e "\nSSH responded for ${ULEN} seconds and stoped on ${UDATE}."
+fi
+DLEN=$(( $(date +%s) - STIME ))
+if [ "${DLEN}" -gt 3600 ]; then
+	echo "Then, waited for ${DLEN} seconds ($(( DLEN / 3600 )) hours) and started to respond on $(date)."
+elif [ "${DLEN}" -gt 60 ]; then
+	echo "Then, waited for ${DLEN} seconds ($(( DLEN / 60 )) minutes) and started to respond on $(date)."
+else
+	echo "Then, waited for ${DLEN} seconds and started to respond on $(date)."
+fi

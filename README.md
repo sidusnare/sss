@@ -54,4 +54,8 @@ For my use cases, I keep a tmpfs mounted on $HOME/usr/tmp, some of my design cho
 - ressh
   - Starts an ssh agent if one isn't running
   - Adds keys from the usual place
+- wait.*
+    - Waits for server names provided on the specified protocol to start responding
+- wait.no*
+    - Waits for server names provided on the specified protocol to sopt responding and then start responding
 

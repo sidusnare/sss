@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+STIME=$( date +%s )
+if [ -z "${1}" ]; then
+	echo "Please provide a server name" >&2
+	exit 1
+fi
+
+for x in "${@}";do 
+	echo -n "Waiting for: "
+	userandhost=$( awk -F \@ '{print($2)}' <<< "${x}" )
+	if [ -z "$userandhost" ]; then
+		host="${x}"
+	else
+		host="${userandhost}"
+	fi
+	dnslookup "${host}"
+	until hn "${host}" 443 1 >> /dev/null 2>> /dev/null;do echo -n .;sleep 0.5s;done
+done
+echo -e "\nwaited for $(( $(date +%s) - STIME )) seconds."

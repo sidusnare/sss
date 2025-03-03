@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+STIME=`date +%s`
+HELP="
+Usage: $0 host:port
+Example: $0 google.com:80
+"
+if [ -z "$1" ]; then
+	echo "Missing argument"
+	echo -e "$HELP"
+	exit 1
+fi
+SERV=$( awk -F : '{print($1)}' <<< "${1}" )
+PORT=$( awk -F : '{print($2)}' <<< "${1}" )
+if [ -z "$SERV" ] || [ -z "$PORT" ]; then
+	echo "Invalid argument"
+	echo -e "$HELP"
+	exit 1
+fi	
+for x in $@;do 
+	SERV=$( awk -F : '{print($1)}' <<< "${x}" )
+	PORT=$( awk -F : '{print($2)}' <<< "${x}" )
+	echo "Checking ${SERV} on ${PORT}"
+	until hn $x $PORT 1 >> /dev/null 2>> /dev/null
+		do echo -n .
+		sleep 0.5s
+	done
+done
+echo -e "\nwaited for $(( $(date +%s) - STIME )) seconds."
+
