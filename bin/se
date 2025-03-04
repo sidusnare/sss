@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+if [ -n "${1}" ];then
+	FILE=${1}
+else
+	FILE="${HOME}/usr/tmp/.${USER}.env"
+fi
+export -p | egrep -v '_=|PROFILEREAD' | grep '=' > $FILE
+env | grep -E -v '^_=|PROFILEREAD' | grep '=' | sed -e "s/=/='/" -e "s/$/'/" > "${FILE}2"
+if [ -n "${DISPLAY}" ] && xset q &>> /dev/null; then
+	echo "${DISPLAY}" > "${HOME}/usr/tmp/.${USER}.disp"
+fi
+ssh-add -l &>> /dev/null
+if [ "${?}" -lt 2 ];then
+	if [ -n "${SSH_AUTH_SOCK}" ]; then
+		echo "Exporting SSH enviroment" >&2
+		export | grep 'SSH_' > "${HOME}/usr/tmp/.${USER}.ssh"
+	fi
+fi
+for i in "${HOME}/usr/tmp/.${USER}.disp" "${HOME}/usr/tmp/.${USER}.ssh" "${HOME}/usr/tmp/.${USER}.env" "${HOME}/usr/tmp/.${USER}.env2" "${FILE}";do
+	if [ -e "${i}" ]; then
+		chmod 0600 "${i}"
+	fi
+done

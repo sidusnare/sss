@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+if [ -n "${1}" ];then
+	FILE=${1}
+else
+	if ! [ -d "${HOME}/usr/local/var" ]; then
+		mkdir -p "${HOME}/usr/local/var"
+		echo "Created ${HOME}/usr/local/var" >&2
+	fi
+	FILE="${HOME}/usr/tmp/.${USER}.env"
+fi
+source "${FILE}"

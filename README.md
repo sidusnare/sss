@@ -58,4 +58,9 @@ For my use cases, I keep a tmpfs mounted on $HOME/usr/tmp, some of my design cho
     - Waits for server names provided on the specified protocol to start responding
 - wait.no*
     - Waits for server names provided on the specified protocol to sopt responding and then start responding
-
+- flatten
+  - replaces control characters with escaped control characters for use with `echo -e`
+- se
+  - Saves enviroment to file
+- le
+  - Sources enviroment from file
