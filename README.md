@@ -17,6 +17,22 @@ For my use cases, I keep a tmpfs mounted on $HOME/usr/tmp, some of my design cho
     - make that directory in $TMP if it doesn't exist
     - include that directory in the path it outputs
     - return an error if the name exists as a file
+- yesno
+  - takes no arguments
+  - ignores all input except
+    - Returns 0 for Y or y
+    - Returns 1 for N or n
+- hn
+  - Takes 3 arguments
+    - Host name
+    - Port number
+    - Timeout
+  - If it can connect to the server on that port inside the timout, returns true
+  - Otherwise returns false
+- slower
+  - It's like cat, but slower
+- ip.unrange
+  - Given a start and end IP, prints all IPs between
 - check.*.py
   - Reads a file in the specified format
   - Return error if file cannot be read
@@ -64,3 +80,7 @@ For my use cases, I keep a tmpfs mounted on $HOME/usr/tmp, some of my design cho
   - Saves enviroment to file
 - le
   - Sources enviroment from file
+- isip
+  - Takes IP, returns true if argv[1] is a string that can be interpreted as an IP
+- isipv6
+  - Takes IP, returns true if argv[1] is a string that can be interpreted as an IPv6

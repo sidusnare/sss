@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ -z "${1}" ]; then
+	echo "Please provide an IP address"
+	exit 1
+fi
+full_ip="$( sipcalc "${1}" | grep -m 1 'Expanded Address' | awk -F '	- ' '{print($2)}' )"
+if [ -z "${full_ip}" ]; then
+	echo "Error: ${1} cannot be parsed as an IPv6 IP" >&2
+	exit 2
+fi
+if grep -E '^([0-9a-fA-F]{4}:){7}[0-9a-fA-F]{4}$' <<< "${full_ip}" &>> /dev/null; then
+	echo "Yes: ${1} can be an IPv6 IP" >&2
+	exit 0
+else
+	echo "No: ${1} cannot be an IPv6 IP" >&2
+	exit 1
+fi
