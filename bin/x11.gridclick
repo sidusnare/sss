@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+
+
+if ! which xdotool &>> /dev/null; then
+	echo 'Please install xdotool'
+	exit 1
+fi
+cd ~/Downloads
+for y in 291 491 691 890;do
+	for x in 514 786 1064 1338;do
+		xdotool mousemove "${x}" "${y}"
+		int="$(( ( RANDOM % 33 ) + 15 ))"
+		sleep 0.5
+		xdotool click --delay "${int}" 1
+		until test -e open*.mp4;do
+			sleep 0.2
+		done
+		ls -l open*.mp4
+		mv -fv open*.mp4 PC/
+		sync
+	done
+done
+
+

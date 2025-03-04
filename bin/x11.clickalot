@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+PS4='+ $EPOCHREALTIME ($LINENO) '
+
+
+if ! which xdotool &>> /dev/null; then
+	echo 'Please install xdotool'
+	exit 1
+fi
+myid=$( xdotool selectwindow )
+loc=$( xdotool getmouselocation )
+curid=$( awk -F : '{print($5)}' <<< "${loc}" )
+mousex=$( awk '{print($1)}' <<< "${loc}" | awk -F : '{print($2)}' )
+mousey=$( awk '{print($2)}' <<< "${loc}" | awk -F : '{print($2)}' )
+echo "${myid} ${mousex} ${mousey} ${curid}"
+x=0
+while [ "${x}" -lt 5000 ];do
+	sleep 1
+	int="$(( ( RANDOM % 33 ) + 15 ))"
+	loc=$( xdotool getmouselocation )
+	curid=$( sed -e 's/.* window://' <<< "${loc}" )
+	curmousex=$( sed -e 's/^x://' -e 's/ y:.*//' <<< "${loc}" )
+	curmousey=$( sed -e 's/^.* y://' -e 's/ screen:.*//' <<< "${loc}" )
+	echo -e "${myid}\n\t${curmousex}x${curmousey}\n\t${curid}\n\tLoop: ${x}\n\tDelay: ${int}"
+	if [ "${myid}" != "${curid}" ];then
+		echo "Sent ${x} clicks}"
+		exit 0
+	fi
+	x=$(( x + 1 ))
+	xdotool mousemove "$(( mousex + ( RANDOM % 7 ) ))" "$(( mousey + ( RANDOM % 7 ) ))"
+	xdotool click --delay "${int}" 1
+	xdotool click --delay "${int}" 1
+	xdotool click --delay "${int}" 1
+	xdotool click --delay "${int}" 1
+	xdotool click --delay "${int}" 1
+	xdotool key Right
+done
+
+echo "Sent ${x} clicks"
+exit 0
+

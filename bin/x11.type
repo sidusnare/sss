@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+if ! which xdotool &>> /dev/null; then
+	echo 'Please install xdotool'
+	exit 1
+fi
+slow=no
+while getopts sh modes; do
+	case "$modes" in
+		s)
+			slow=yes
+			;;
+		h)
+			echo -e "${0}\n\ts\tSlow mode, wait 1 second between key strokes\n\th\tPrint this hand message"
+			exit 0
+			;;
+	esac
+done
+shift $(( OPTIND - 1))
+string="${*}"
+if [ -z "${1}" ]; then
+	echo 'Please pass string to type'
+	exit
+fi
+myid=$( xdotool selectwindow )
+xdotool windowfocus --sync "${myid}"
+xdotool windowraise "${myid}"
+if [ "${slow}" = 'yes' ]; then
+	for (( i=0; i<${#string}; i++ )); do
+		xdotool type --window "${myid}" "${string:$i:1}"
+		sleep 1
+	done
+else
+	xdotool type --window "${myid}" "${string}"
+fi

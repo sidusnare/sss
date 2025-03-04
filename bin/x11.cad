@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+if ! which xdotool &>> /dev/null; then
+	echo 'Please install xdotool'
+	exit 1
+fi
+myid=$( xdotool selectwindow )
+xdotool windowfocus "${myid}"
+xdotool windowraise "${myid}"
+xdotool key --window "${myid}" 'Control_L+Alt_L+Delete'
