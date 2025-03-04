@@ -1,5 +1,11 @@
 #!/bin/bash
 
+for program in sipcalc grep awk;do
+	if ! command -v "${program}" &>> /dev/null; then
+		echo "Please install ${program}" >&2
+		exit 1
+	fi
+done
 if [ -z "${1}" ]; then
 	echo "Please provide an IP address"
 	exit 1
