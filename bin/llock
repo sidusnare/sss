@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+
+#re-source $DISPLAY for running command remotely
+unset DISPLAY
+source "${HOME}/usr/tmp/.fred.env"
+OS=$(uname)
+echo "Using display ${DISPLAY}"
+if [ -z "$DISPLAY" ];then
+	DISPLAY=`cat "$HOME"/usr/tmp/.fred.disp`
+	export DISPLAY
+	echo "Using display ${DISPLAY}"
+fi
+if [ -z "$DISPLAY" ] ; then 
+	DISPLAY=:0
+	echo "Using display ${DISPLAY}"
+fi
+export DISPLAY=$DISPLAY
+if [ -e "$HOME"/usr/var/dispauth ]; then
+	XAUTHORITY=`cat "$HOME"/usr/var/dispauth`
+	export XAUTHORITY=$XAUTHORITY
+fi
+
+locked=0
+case "$OS" in
+	Darwin)
+		open /System/Library/Frameworks/ScreenSaver.framework/Versions/Current/Resources/ScreenSaverEngine.app
+		;;
+	Linux)
+
+		if pidof xscreensaver; then
+			if xscreensaver-command -lock; then
+				locked=1
+			fi
+		else
+			#GNOME Command
+			if gnome-screensaver-command -l; then
+				locked=1
+			#MATE command
+			elif mate-screensaver-command -l ;then
+				locked=1
+			#Classic X Command
+			elif xscreensaver-command -lock; then
+				locked=1
+			#Old KDE
+			elif dcop kdesktop KScreensaverIface lock; then
+				locked=1
+			#New KDE
+			elif qdbus org.freedesktop.ScreenSaver /ScreenSaver Lock; then
+				locked=1
+			else
+				locked=0
+			fi
+		fi
+		if [ "$locked" = "0" ];then
+			gnome-screensaver &
+			sleep 2s
+			gnome-screensaver-command -l && locked=1
+		fi
+		if [ "$locked" = "0" ];then
+			if which xscreensaver-command 2>> /dev/null >> /dev/null;then
+				watch.xscreensaver &
+				sleep 2s
+				xscreensaver-command -lock && locked=1
+			fi
+		fi
+		xset dpms force off
+		(sleep 2s;xset dpms force off;) &
+		;;
+esac
+[ -d "$HOME"/usr/local/var/log ] || mkdir -p "$HOME"/usr/local/var/log
+echo "$(date +%s)|$(date)|llock return code $locked" >> "$HOME"/usr/local/var/log/llock.log
+if [ "$locked" = "0" ];then
+	echo -n -e '
+##################################################
+##################################################
+##################################################
+####################Failed to lock################
+####################Failed to lock################
+####################Failed to lock################
+####################Failed to lock################
+##################################################
+##################################################
+##################################################
+'
+	kdialog --error "Unable to lock"
+fi
+sleep 2
+xset dpms force off
+if [ -e "${HOME}/usr/local/llock.d" ]; then
+	cd "${HOME}/usr/local/llock.d"
+	for s in *;do
+		./$s &
+	done
+fi

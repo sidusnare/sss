@@ -102,3 +102,5 @@ For my use cases, I keep a tmpfs mounted on $HOME/usr/tmp, some of my design cho
     - Will be the overall size, not any individual sizes unless there is only 1 display
 - cres
   - returns the text resolution of a console
+- nvidia-settings.sh
+  - Starts the nvidia settings proprietary app with sudo
