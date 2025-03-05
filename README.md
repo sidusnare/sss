@@ -96,3 +96,9 @@ For my use cases, I keep a tmpfs mounted on $HOME/usr/tmp, some of my design cho
   - Takes IP, returns true if argv[1] is a string that can be interpreted as an IP
 - isipv6
   - Takes IP, returns true if argv[1] is a string that can be interpreted as an IPv6
+- res
+  - Returns the virtual window size of the current display in X11
+    - If running uneven multiple displays, this will include dead spots
+    - Will be the overall size, not any individual sizes unless there is only 1 display
+- cres
+  - returns the text resolution of a console

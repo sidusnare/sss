@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#
+
+for prog in echo tput;do
+	if ! command -v "${prog}" &>> /dev/null; then
+		echo "Please install ${prog}" >&2
+		exit 1
+	fi
+done
+
+exec echo "$(tput cols)x$(tput lines)"
+

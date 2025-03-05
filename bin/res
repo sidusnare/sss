@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if command -v xdpyinfo &>> /dev/null;then
+	RES=$( xdpyinfo  | grep -m 1 dimensions: | awk '{print($2)}' )
+elif command -v nvidia-settings >> /dev/null 2>> /dev/null && [ -z "$RES" ]; then
+	#echo Using Nvidia
+	RES=$(nvidia-settings -t --query CurrentMetaMode | head -n 1 | tr -d '@' | tr '_' ' ' | tr ' ' '\n'  | grep -E '[0-9]+x[0-9]+' | head -n 1 2>> /dev/null)
+elif command -v xrandr; then
+	RES=$(xrandr -q 2>> /dev/null | grep '\*' | sed -e 's/\*/n/g' -e 's/\+/n/g' -e 's/	/n/g' -e 's/ /n/g' | tr 'n' '\n' | grep -E '[0-9]+x[0-9]+' | sort -u -n | head -n 1)
+fi
+echo "${RES}"
