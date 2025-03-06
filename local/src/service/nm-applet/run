@@ -1,0 +1,11 @@
+#!/bin/bash
+cd "${HOME}"
+EXPORT PARENT=nm-applet
+until pidof wmsystemtray >> /dev/null 2>> /dev/null;do
+	sleep 0.2s
+	echo -n .
+done
+echo '!'
+
+exec /usr/bin/nm-applet
+sleep 5m

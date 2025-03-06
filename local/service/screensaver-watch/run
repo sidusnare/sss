@@ -1,0 +1,6 @@
+#!/bin/bash
+cd "${HOME}"
+PARENT=xscreensaver
+
+exec xscreensaver-command -w
+

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+if [ ! -e "${HOME}/usr/local/var/log/lock" ]; then
+	mkdir -p ${HOME}/usr/local/var/log/lock
+fi
+exec multilog t "${HOME}/usr/local/var/log/lock"

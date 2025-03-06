@@ -1,0 +1,10 @@
+#!/bin/bash
+export PARENT=solaar
+until pidof wmsystemtray >> /dev/null 2>> /dev/null;do
+	sleep 0.2s
+echo -n .
+done
+echo '!'
+
+exec /usr/bin/solaar -w hide
+sleep 5m 

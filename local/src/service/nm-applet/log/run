@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ ! -e "${HOME}/usr/local/var/log/nn-applet" ]; then
+	mkdir -p "${HOME}/usr/local/var/log/nn-applet"
+fi
+
+exec multilog t "${HOME}/usr/local/var/log/nn-applet"
+

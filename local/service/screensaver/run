@@ -1,0 +1,8 @@
+#!/bin/bash
+cd "${HOME}"
+export PARENT=xscreensaver
+LOCKED="$( grep -E 'UNBLANK|LOCK' "${HOME}/usr/local/var/log/lock/current" | tail -n 1 | awk '{print($2)}' )"
+if [ "$LOCKED" == 'LOCK' ]; then
+	(sleep 0.5s; xscreensaver-command -lock) &
+fi
+exec xscreensaver

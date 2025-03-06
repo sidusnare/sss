@@ -1,0 +1,13 @@
+#!/bin/bash
+export PARENT=blueman
+until pidof wmsystemtray >> /dev/null 2>> /dev/null;do
+	sleep 0.2s
+	echo -n .
+done
+
+echo '!'
+
+killall -v blueman-applet blueman-tray
+cd "${HOME}"
+sleep 1s
+exec /usr/bin/blueman-applet

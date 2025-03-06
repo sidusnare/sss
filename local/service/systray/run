@@ -1,0 +1,7 @@
+#!/bin/bash
+export PARENT=wmsystemtray
+source "${HOME}/usr/tmp/.${USER}.env"
+cd "${HOME}"
+echo "${$}" > TPID
+#while read line;
+exec wmsystemtray -w 3

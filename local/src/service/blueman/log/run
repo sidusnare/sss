@@ -1,0 +1,7 @@
+#!/bin/bash
+if [ ! -e "${HOME}/usr/local/var/log/blueman" ]; then
+	mkdir -p "${HOME}/usr/local/var/log/blueman"
+fi
+
+exec multilog t "${HOME}/usr/local/var/log/blueman"
+

@@ -1,0 +1,18 @@
+#!/bin/bash
+cd "${HOME}"
+export PARENT=hp-systray
+until pidof wmsystemtray >> /dev/null 2>> /dev/null;do
+	sleep 0.2s
+	echo -n .
+done
+echo -n '!'
+
+source "${HOME}/usr/tmp/.${USER}.env"
+cd "${HOME}"
+
+while pgrep -f hp-systray; do
+	kill $( pgrep -f hp-systray )
+	sleep 2s
+done
+
+exec hp-systray
