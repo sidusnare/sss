@@ -2,11 +2,11 @@
 
 #re-source $DISPLAY for running command remotely
 unset DISPLAY
-source "${HOME}/usr/tmp/.fred.env"
-OS=$(uname)
+source "${HOME}/usr/tmp/.${USER}.env"
+OS="$(uname)"
 echo "Using display ${DISPLAY}"
 if [ -z "$DISPLAY" ];then
-	DISPLAY=`cat "$HOME"/usr/tmp/.fred.disp`
+	DISPLAY=`cat "$HOME"/usr/tmp/.${USER}.disp`
 	export DISPLAY
 	echo "Using display ${DISPLAY}"
 fi

@@ -104,3 +104,5 @@ For my use cases, I keep a tmpfs mounted on $HOME/usr/tmp, some of my design cho
   - returns the text resolution of a console
 - nvidia-settings.sh
   - Starts the nvidia settings proprietary app with sudo
+- snapshot.imagemagik.sh
+  - Uses imagemagik to take a screenshot
