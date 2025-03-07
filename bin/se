@@ -4,7 +4,7 @@ if [ -n "${1}" ];then
 else
 	FILE="${HOME}/usr/tmp/.${USER}.env"
 fi
-export -p | egrep -v '_=|PROFILEREAD' | grep '=' > $FILE
+export -p | egrep -v '_=|PROFILEREAD|^UID=|^USER=' | grep '=' > $FILE
 env | grep -E -v '^_=|PROFILEREAD' | grep '=' | sed -e "s/=/='/" -e "s/$/'/" > "${FILE}2"
 if [ -n "${DISPLAY}" ] && xset q &>> /dev/null; then
 	echo "${DISPLAY}" > "${HOME}/usr/tmp/.${USER}.disp"
