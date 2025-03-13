@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 YES=no
 FORCE=no
 while getopts yvf modes; do

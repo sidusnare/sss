@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 for program in sipcalc grep awk;do
 	if ! command -v "${program}" &>> /dev/null; then

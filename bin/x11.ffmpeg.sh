@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 host="$( hostname )"
 
 FPS=30

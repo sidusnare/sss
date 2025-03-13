@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 export SCRIPT="SSH_ASKPASS $$"
 if [ -z "$SSH_AUTH_SOCK" ] ;then
         source "${HOME}/usr/tmp/.${USER}.ssh" 1>> /dev/null 2>> /dev/null

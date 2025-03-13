@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+
 import sys
 file = open('/root/dns/hostname.26036', 'r')
 inchar = '   '

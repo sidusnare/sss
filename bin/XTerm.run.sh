@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 if [ -z "${SSH_AUTH_SOCK}" ];then
 	source FILE="${HOME}/usr/tmp/.${USER}.env"
 fi

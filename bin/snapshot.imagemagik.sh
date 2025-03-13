@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 
 for prog in xdotool import kdialog;do
 	if ! command -v "${prog}"; then

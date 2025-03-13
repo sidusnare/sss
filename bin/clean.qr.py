@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 for prog in zbarimg qrencode convert;do
 	if ! command -v "${prog}"; then

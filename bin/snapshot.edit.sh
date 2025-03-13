@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 last="$( find "${HOME}/Stuff/ScreenShots/" -type f -printf '%T+|%p\n' | sort | tail -n 1 | cut -d '|' -f 2 )"
 echo "Last: ${last}"

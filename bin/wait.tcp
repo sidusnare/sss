@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 STIME=`date +%s`
 HELP="
 Usage: $0 host:port

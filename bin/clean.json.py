@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 #Read JSON data and write it well formatted to a file
 #Fred Dinkler IV
