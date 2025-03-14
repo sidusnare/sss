@@ -1,0 +1,9 @@
+set number
+set textwidth=0
+set wrapmargin=0
+set cm=blowfish2
+filetype plugin on
+set textwidth=0
+set wrapmargin=0
+set mouse=
+set ttymouse=
