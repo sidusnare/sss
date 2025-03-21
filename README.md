@@ -106,3 +106,8 @@ For my use cases, I keep a tmpfs mounted on $HOME/usr/tmp, some of my design cho
   - Starts the nvidia settings proprietary app with sudo
 - snapshot.imagemagik.sh
   - Uses imagemagik to take a screenshot
+- pidwalk.sh
+  - Walks up the PID tree to init
+  - Takes one integer representing a running PID as it's only argument
+  - Prints the number, name (acording to stat), executable, and command line
+  - Mostly useful as a code example for difinitivley avoiding certain nesting infinite loop conditions
