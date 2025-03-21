@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+#SPDX-License-Identifier: GPL-3.0-only
 if command -v xdpyinfo &>> /dev/null;then
 	RES=$( xdpyinfo  | grep -m 1 dimensions: | awk '{print($2)}' )
 elif command -v nvidia-settings >> /dev/null 2>> /dev/null && [ -z "$RES" ]; then

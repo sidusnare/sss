@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#SPDX-License-Identifier: GPL-3.0-only
 if [ -z "${1}" ]; then
 	child="${$}"
 else

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 #Fred Dinkler IV
+#SPDX-License-Identifier: GPL-3.0-only
 #GPLv3
 
 if [ -z "${1}" ]; then

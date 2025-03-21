@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+#SPDX-License-Identifier: GPL-3.0-only
 for prog in zbarimg qrencode convert;do
 	if ! command -v "${prog}"; then
 		echo "Unable to find ${prog}" >&2

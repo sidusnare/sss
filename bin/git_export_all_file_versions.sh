@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+#SPDX-License-Identifier: GPL-3.0-only
 # we'll write all git versions of the file to this folder:
 EXPORT_TO="$( tmpfile git_all )"
 rm "${EXPORT_TO}" || exit

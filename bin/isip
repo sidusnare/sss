@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+
+#SPDX-License-Identifier: GPL-3.0-only
 if [ -z "${1}" ]; then
 	echo "Please pass string that might be an IPv4 IP" >&2
 	exit 10

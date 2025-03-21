@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+#SPDX-License-Identifier: GPL-3.0-only
 source ssh.find
 
 #Checking this return code like this is because it will return 1 if it is running but empty

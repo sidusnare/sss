@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+#SPDX-License-Identifier: GPL-3.0-only
 N="$(which nvidia-settings)"
 #Find the utility
 if [ -z "${N}" ]; then

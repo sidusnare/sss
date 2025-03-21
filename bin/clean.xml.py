@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+#SPDX-License-Identifier: GPL-3.0-only
 #Cleans an XML file
 #Fred Dinkler IV
 

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+#SPDX-License-Identifier: GPL-3.0-only
 #re-source $DISPLAY for running command remotely
 unset DISPLAY
 source "${HOME}/usr/tmp/.${USER}.env"

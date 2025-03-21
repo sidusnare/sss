@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#SPDX-License-Identifier: GPL-3.0-only
 export PARENT="svscan $$"
 
 servicedir=$( readlink -f "${HOME}/usr/local/service" )

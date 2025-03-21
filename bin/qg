@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+#SPDX-License-Identifier: GPL-3.0-only
 YES=no
 FORCE=no
 while getopts yvf modes; do

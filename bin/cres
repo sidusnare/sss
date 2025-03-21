@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #
 
+#SPDX-License-Identifier: GPL-3.0-only
 for prog in echo tput;do
 	if ! command -v "${prog}" &>> /dev/null; then
 		echo "Please install ${prog}" >&2

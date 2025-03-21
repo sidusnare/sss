@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+#SPDX-License-Identifier: GPL-3.0-only
 EXTS=( 'journal' 'wal' 'shm' 'rebuild' )
 if file "${1}" | grep ': SQLite'; then
 	BAK="$( tmpfile clean.sqlite )"

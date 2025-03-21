@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+#SPDX-License-Identifier: GPL-3.0-only
 #Read YAML data and write it well formatted to a file
 # This isn't really a linter, it's just to read in anything that's technically valid and write it out in the uniform way python expects JSON to look.
 #Fred Dinkler IV
