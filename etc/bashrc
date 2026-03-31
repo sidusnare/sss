@@ -39,11 +39,9 @@ update_terminal_cwd() {
 case "${OSYSTEM}" in
 	Darwin)
 		export BOOTIME=$(sysctl -n kern.boottime | tr -d ',' | awk '{print($4)}')
-		stat_current_location=$(stat -s "${HOME}/usr/local/var/current_location" | tr ' ' '\n' | grep '^st_mtime=' | awk -F '=' '{print($2)}' )
 		;;
 	Linux)
 		export BOOTIME="$(( SHELLSTART - $( tr ' ' '.' < /proc/uptime | awk -F . '{print($1)}' ) ))"
-		stat_current_location=$(stat -c %Y "${HOME}/usr/local/var/current_location")
 		;;
 esac 
 
