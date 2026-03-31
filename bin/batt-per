@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+BATT=""
+
+if command -v acpi >> /dev/null 2>> /dev/null;then
+	AC=$(acpi -a 2>> /dev/null | awk -F ':' '{print($2)}' | tr -d ' ')
+	declare -i BAT=0
+	declare -i BATS=0
+	for BATTX in $(acpi -b 2>> /dev/null | grep -v '0%, rate information unavailable' | grep '%' | tr ' ' '\n' | grep '%' | tr -d , | tr -d %);do
+		BATS+=1
+		BAT=$(( BATTX + BAT ))
+	done
+	BAT=$(( BAT / BATS ))
+	if [ "$AC" == "on-line" ]; then
+		export BATT="AC-${BAT}"
+	else
+		export BATT="${BAT}"
+	fi
+fi
+
+if command -v pmset >/dev/null 2>&1; then
+	BAT=$( pmset -g batt 2>/dev/null | grep -Eo '[0-9]+%' | head -n1)
+	if printf "%s\n" "$PMSET_OUT" | grep -q "AC Power"; then
+		AC="on-line"
+	else
+		AC="off-line"
+	fi
+
+	# Only set if battery value exists
+	if [ -n "$BAT" ]; then
+		if [ "$AC" = "on-line" ]; then
+			BATT="AC-${BAT}"
+		else
+			BATT="${BAT}"
+		fi
+	fi
+fi
+
+export BATT

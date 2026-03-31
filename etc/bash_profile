@@ -1,0 +1,120 @@
+#!/usr/bin/env bash
+
+SCRIPT="$0"
+export SCRIPT
+OS="$(uname)"
+ARCH="$(uname -m)"
+HOST="$( hostname )"
+FHOST="$( hostname -f )"
+
+if [ -x "${HOME}/usr/bin/mypaths.sh" ]; then
+	PATH="$( "${HOME}/usr/bin/mypaths.sh" )"
+fi
+
+PATH
+TMP="${HOME}/usr/tmp/"
+HISTCONTROL=ignoreboth
+LD_LIBRARY_PATH="${HOME}/usr/local/lib/:${HOME}/usr/lib.${OS}.${ARCH}/"
+C_INCLUDE_PATH="${HOME}/usr/local/include"
+LDFLAGS="-L${HOME}/usr/local/lib"
+CFLAGS="-I${HOME}/usr/local/include"
+PROMPT_COMMAND
+OSYSTEM="$( uname -s )"
+SHELLSTART="$( date +%s )"
+HOSTNAME="$(hostname)"
+
+export PATH TMP HISTCONTROL LD_LIBRARY_PATH C_INCLUDE_PATH LDFLAGS CFLAGS PROMPT_COMMAND OSYSTEM SHELLSTART HOSTNAME FHOST HOST ARCH OS 
+
+#reimplementing this here because sometimes it causes an error if you change to an interactive bash shell from something else.
+update_terminal_cwd() {
+    # Identify the directory using a "file:" scheme URL,
+    # including the host name to disambiguate local vs.
+    # remote connections. Percent-escape spaces.
+    local SEARCH=' '
+    local REPLACE='%20'
+    local PWD_URL="file://$HOSTNAME${PWD//$SEARCH/$REPLACE}"
+    printf '\e]7;%s\a' "$PWD_URL"
+}
+
+case "${OSYSTEM}" in
+	Darwin)
+		export BOOTIME=$(sysctl -n kern.boottime | tr -d ',' | awk '{print($4)}')
+		stat_current_location=$(stat -s "${HOME}/usr/local/var/current_location" | tr ' ' '\n' | grep '^st_mtime=' | awk -F '=' '{print($2)}' )
+		;;
+	Linux)
+		export BOOTIME="$(( SHELLSTART - $( tr ' ' '.' < /proc/uptime | awk -F . '{print($1)}' ) ))"
+		stat_current_location=$(stat -c %Y "${HOME}/usr/local/var/current_location")
+		;;
+esac 
+
+if [ -e "/opt/sun-java" ]; then
+	export JAVA_HOME=/opt/sun-java/
+	export JAVAC=/opt/sun-java/bin/javac
+fi
+
+umask 0077
+
+if [ -d "${HOME}/usr/local/etc/bash.rc.d" ] ; then 
+	for inc in "${HOME}/usr/local/etc/bash.rc.d/"*.inc;do
+		source "${inc}" >> /dev/null 2>> /dev/null
+	done
+fi
+if [ -d "${HOME}/usr/etc/bash.rc.d" ] ; then 
+	for inc in "${HOME}/usr/etc/bash.rc.d/"*.inc;do
+		source "${inc}" >> /dev/null 2>> /dev/null
+	done
+fi
+
+#Run for interactive shells
+if [[ "$-" == *i* ]] ;then 
+	if [ "${TERM}" = 'xterm-kitty' ]; then
+		canarry=0
+		for p in /lib/terminfo /usr/share/terminfo /etc/terminfo "${HOME}/.terminfo";do
+			if [ -e "${p}/xterm-kitty" ] || [ -e "${p}/x/xterm-kitty" ] ;then
+				canarry=1
+				break
+			fi
+		done
+		if [ "${canarry}" = 0 ]; then
+			echo "Host missing xterm-kitty termcap" >&2
+			export TERM=xterm
+		fi
+	fi		
+	if [ -x "${HOME}/usr/bin/batt-per" ]; then
+		source "${HOME}/usr/bin/batt-per"
+	fi
+	if [ "${EUID}" -le 1 ]; then
+		ps_serarator='♛'
+	else
+		ps_serarator='♟'
+	fi
+	if which tput 2>> /dev/null >> /dev/null && [ -n "${TERM}" ]; then
+		if [ ! -z "${BATT}" ]; then
+			export PROMPT_COMMAND="source ${HOME}/usr/bin/batt-per"
+			export PS1="#\\[[1m\\]\\[[31m\\]\\D{%F}-\\t\[\033[0m\]#\\[[36m\\](\\j)\[\033[0m\]#\\[[36m\\]\$BATT\[\033[0m\]#\\[[35m\\]\\u@\\[[33m\\]${HOSTNAME}:\\[[34m\\]\\w \\[(B[m\\]${ps_serarator}"
+		else
+			export PS1="#\\[[1m\\]\\[[31m\\]\\D{%F}-\\t\[\033[0m\]#\\[[36m\\]\\j\[\033[0m\]#\\[[35m\\]\\u@\\[[33m\\]${HOSTNAME}:\\[[34m\\]\\w \\[(B[m\\]${ps_serarator}"
+	
+		fi
+	else
+		if [ -n "${BATT}" ]; then
+			export PROMPT_COMMAND="source ${HOME}/usr/bin/batt-per"
+			export PS1="[\D{%F}-\t](\j){\$BATT}\u@\h:\w ${ps_serarator} "
+		else
+			export PS1="[\D{%F}-\t](\j)\u@\h:\w ${ps_serarator} "
+		fi
+	fi		
+
+	if [ -d "${HOME}/usr/local/etc/bash.int.rc.d" ] ; then 
+		for inc in "${HOME}/usr/local/etc/bash.int.rc.d/"*.inc;do
+			[ -x "$inc" ] && source "${inc}"
+		done 
+	fi
+	if [ -d "${HOME}/usr/etc/bash.int.rc.d" ] ; then 
+		for inc in "${HOME}/usr/etc/bash.int.rc.d/"*.inc;do
+			[ -x "$inc" ] && source "${inc}"
+		done 
+	fi
+fi
+
+unset SCRIPT
