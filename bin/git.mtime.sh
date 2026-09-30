@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
 
-#GPL-2
-
-#This could be faster if we assume all files in the same repo, or if we added the complexity of doing multiple loops to track all the repos files are in.
-#Put it down as a TODO, but performance has been adequate so far.
-
-
 
 for file in "${@}";do
 	#echo "${file}"
